@@ -35,7 +35,7 @@ def q1_time(file_path: str) -> List[Tuple[datetime.date, str]]:
         FROM user_counts
         QUALIFY rn = 1
     )
-    SELECT tweet_date, username, tweet_count
+    SELECT tweet_date, username
     FROM ranked_users
     ORDER BY tweet_count DESC
     """
@@ -47,5 +47,4 @@ def q1_time(file_path: str) -> List[Tuple[datetime.date, str]]:
 if __name__ == "__main__":
     file_path = "data/farmers.parquet"
     top_users = q1_time(file_path)
-    for date, username, qtd in top_users:
-        print(f"Date: {date}, Top User: {username}, Tweets: {qtd}")
+    print(top_users)
