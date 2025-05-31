@@ -5,8 +5,6 @@ from typing import List, Tuple
 def q1_time(file_path: str) -> List[Tuple[datetime.date, str]]:
     con = duckdb.connect(database=':memory:')
 
-    # Cria uma tabela temporária a partir do arquivo parquet com as colunas relevantes,
-    # extraindo a data e o username do usuário
     con.execute(f"""
         CREATE TABLE tweets AS 
         SELECT 
