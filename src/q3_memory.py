@@ -1,8 +1,10 @@
 import duckdb
 import datetime
 from typing import List, Tuple
+from memory_profiler import profile
 
-def q3_time(file_path: str) -> List[Tuple[datetime.date, str]]:
+@profile
+def q3_memory(file_path: str) -> List[Tuple[datetime.date, str]]:
     query = """
         WITH mentions_extracted AS (
             SELECT REGEXP_EXTRACT_ALL(content, '@\\w+') AS mentions
@@ -25,5 +27,5 @@ def q3_time(file_path: str) -> List[Tuple[datetime.date, str]]:
 
 if __name__ == "__main__":
     file_path = "data/farmers.parquet"
-    top_users = q3_time(file_path)
+    top_users = q3_memory(file_path)
     print(top_users)

@@ -1,7 +1,9 @@
 import duckdb
 import datetime
 from typing import List, Tuple
+from memory_profiler import profile
 
+@profile
 def q1_time(file_path: str) -> List[Tuple[datetime.date, str]]:
     con = duckdb.connect(database=':memory:')
 
