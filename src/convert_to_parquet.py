@@ -14,11 +14,11 @@ def convert_json_to_parquet(json_path:str = "data/farmers-protest-tweets-2021-2-
 
         duckdb.sql(f"""
             COPY (
-                SELECT * FROM read_json_auto('{json_path}')
-            ) TO '{parquet_path}' (FORMAT PARQUET)
+                SELECT * FROM read_json_auto('{PROJECT_ROOT}/{json_path}')
+            ) TO '{PROJECT_ROOT}/{parquet_path}' (FORMAT PARQUET)
         """)
 
-        print("✅ Parquet file created:", parquet_path)
+        print(f"✅ Parquet file created: {PROJECT_ROOT}/{parquet_path}")
     else:
         print("✅ Parquet file already exists.")
 
