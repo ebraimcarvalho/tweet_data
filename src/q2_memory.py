@@ -2,11 +2,13 @@ import duckdb
 import emoji
 from collections import Counter
 from typing import List, Tuple
+from memory_profiler import profile
 
 def extract_emojis(text):
     return [char for char in text if char in emoji.EMOJI_DATA]
 
-def q2_time(file_path: str) -> List[Tuple[str, int]]:
+@profile
+def q2_memory(file_path: str) -> List[Tuple[str, int]]:
     df = duckdb.query(f"SELECT content FROM read_parquet('{file_path}')").to_df()
 
     all_emojis = []
@@ -20,4 +22,4 @@ def q2_time(file_path: str) -> List[Tuple[str, int]]:
 if __name__ == "__main__":
 
     file_path = "data/farmers.parquet"
-    print(q2_time(file_path))
+    print(q2_memory(file_path))

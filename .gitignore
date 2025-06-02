@@ -1,4 +1,8 @@
 venv
 data/farmers-protest-tweets-2021-2-4.json
 data/farmers.parquet
+<<<<<<< HEAD
 src/__pycache__
+=======
+src/pycache
+>>>>>>> 3b98839fe26463beae74c0571caa2943a32542e4
