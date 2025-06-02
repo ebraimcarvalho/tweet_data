@@ -1,11 +1,15 @@
 import gdown
 import os
 import time
+from pathlib import Path
 
 def download_file_from_google_drive(file_id="1B-TywPDU-BBFbMFbrqy2v71FrFxUqsa7", target_file="farmers-protest-tweets-2021-2-4.json"):
     start = time.perf_counter()
 
-    target_folder = "data"
+    CURRENT_FOLDER = Path(__file__).resolve()
+    PROJECT_ROOT = CURRENT_FOLDER.parent.parent
+
+    target_folder = f"{PROJECT_ROOT}/data"
     os.makedirs(target_folder, exist_ok=True)
     json_file_path = os.path.join(target_folder, target_file)
 
