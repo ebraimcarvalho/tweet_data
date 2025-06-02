@@ -3,7 +3,7 @@ import time
 import duckdb
 from pathlib import Path
 
-def convert_json_to_parquet(json_path = "data/farmers-protest-tweets-2021-2-4.json", parquet_path = "data/farmers.parquet"):
+def convert_json_to_parquet(json_path:str = "data/farmers-protest-tweets-2021-2-4.json", parquet_path:str = "data/farmers.parquet"):
     start = time.perf_counter()
 
     CURRENT_FOLDER = Path(__file__).resolve()
