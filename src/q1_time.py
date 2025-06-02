@@ -1,8 +1,13 @@
 import duckdb
-import datetime
+import datetime, time
 from typing import List, Tuple
+from pathlib import Path
 
 def q1_time(file_path: str) -> List[Tuple[datetime.date, str]]:
+
+    CURRENT_FOLDER = Path(__file__).resolve()
+    PROJECT_ROOT = CURRENT_FOLDER.parent.parent
+
     con = duckdb.connect(database=':memory:')
 
     con.execute(f"""
@@ -10,7 +15,7 @@ def q1_time(file_path: str) -> List[Tuple[datetime.date, str]]:
         SELECT 
             CAST(SUBSTR(date, 1, 10) AS DATE) AS tweet_date,
             user['username'] AS username
-        FROM read_parquet('{file_path}')
+        FROM read_parquet('{PROJECT_ROOT}/{file_path}')
     """)
 
     query = """
@@ -42,7 +47,18 @@ def q1_time(file_path: str) -> List[Tuple[datetime.date, str]]:
     con.close()
     return result
 
-if __name__ == "__main__":
+def execute():
+    start = time.perf_counter()
+
     file_path = "data/farmers.parquet"
+
     top_users = q1_time(file_path)
+
     print(top_users)
+
+    end = time.perf_counter()
+
+    print(f"Elapsed: {end - start:.4f} seconds")
+
+if __name__ == "__main__":
+    execute()

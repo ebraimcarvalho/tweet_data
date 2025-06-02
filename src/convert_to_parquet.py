@@ -1,25 +1,30 @@
 import os
-import json
-import pandas as pd
+import time
+import duckdb
+from pathlib import Path
 
-json_path = "data/farmers-protest-tweets-2021-2-4.json"
-parquet_path = "data/farmers.parquet"
+def convert_json_to_parquet(json_path:str = "data/farmers-protest-tweets-2021-2-4.json", parquet_path:str = "data/farmers.parquet"):
+    start = time.perf_counter()
 
-# If parquet already exists, skip
-if not os.path.exists(parquet_path):
-    print("🔄 Converting JSON to Parquet...")
+    CURRENT_FOLDER = Path(__file__).resolve()
+    PROJECT_ROOT = CURRENT_FOLDER.parent.parent
 
-    # Load JSON line by line
-    data = []
-    with open(json_path, "r", encoding="utf-8") as f:
-        for line in f:
-            if line.strip():
-                data.append(json.loads(line))
+    if not os.path.exists(f"{PROJECT_ROOT}/{parquet_path}"):
+        print("🔄 Converting JSON to Parquet...")
 
-    # Convert to DataFrame
-    df = pd.DataFrame(data)
-    df.to_parquet(parquet_path, index=False)
+        duckdb.sql(f"""
+            COPY (
+                SELECT * FROM read_json_auto('{PROJECT_ROOT}/{json_path}')
+            ) TO '{PROJECT_ROOT}/{parquet_path}' (FORMAT PARQUET)
+        """)
 
-    print("✅ Parquet file created:", parquet_path)
-else:
-    print("✅ Parquet file already exists.")
+        print(f"✅ Parquet file created: {PROJECT_ROOT}/{parquet_path}")
+    else:
+        print("✅ Parquet file already exists.")
+
+    end = time.perf_counter()
+
+    print(f"Elapsed: {end - start:.4f} seconds")
+
+if __name__ == "__main__":
+    convert_json_to_parquet()

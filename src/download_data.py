@@ -1,25 +1,29 @@
 import gdown
-import json
 import os
+import time
+from pathlib import Path
 
-target_folder = "data"
-os.makedirs(target_folder, exist_ok=True)
-json_file_path = os.path.join(target_folder, "farmers-protest-tweets-2021-2-4.json")
+def download_file_from_google_drive(file_id="1B-TywPDU-BBFbMFbrqy2v71FrFxUqsa7", target_file="farmers-protest-tweets-2021-2-4.json"):
+    start = time.perf_counter()
 
-file_id = "1B-TywPDU-BBFbMFbrqy2v71FrFxUqsa7"
-url = f"https://drive.google.com/uc?id={file_id}"
+    CURRENT_FOLDER = Path(__file__).resolve()
+    PROJECT_ROOT = CURRENT_FOLDER.parent.parent
 
-if not os.path.exists(json_file_path):
-    print("⬇️ Downloading file...")
-    gdown.download(url, output=json_file_path, quiet=False, fuzzy=True)
-else:
-    print("✅ File already exists. Skipping download.")
+    target_folder = f"{PROJECT_ROOT}/data"
+    os.makedirs(target_folder, exist_ok=True)
+    json_file_path = os.path.join(target_folder, target_file)
 
-data = []
-with open(json_file_path, "r", encoding="utf-8") as f:
-    for line in f:
-        if line.strip():
-            data.append(json.loads(line))
+    url = f"https://drive.google.com/uc?id={file_id}"
 
-print("✅ JSON loaded successfully.")
-print(data[0])
+    if not os.path.exists(json_file_path):
+        print("⬇️ Downloading file...")
+        gdown.download(url, output=json_file_path, quiet=False, fuzzy=True)
+    else:
+        print("✅ File already exists. Skipping download.")
+
+    end = time.perf_counter()
+
+    print(f"Elapsed: {end - start:.4f} seconds")
+
+if __name__ == "__main__":
+    download_file_from_google_drive()
